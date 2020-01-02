@@ -1,0 +1,21 @@
+server:
+  port: 80
+
+# 日志配置
+logging:
+  file: log/lkanz.log #日志文件名称
+  level:
+    root: info #日志级别 root表示所有包，也可以单独配置具体包 fatal error warn info debug trace off
+
+# 支付配置 （注意yml格式中 k/v之间的空格）
+config:
+  #商户ID
+  mchId: 20000003
+  #商户秘钥
+  mchKey: 8RAKBPBN7ZSONY4L3QGPYBB5OAGHHYCTCZ40NV9U9ES3VOVNOKCWQ6X59QK7NLBPLS8SG8FAQA4HXHTMKZHTA0MPLG5XVVTMLSQNSK6L73EQQDYDYW2RUBLHSUJBOQA4
+  #支付网关地址
+  payHost: http://127.0.0.1:3020/
+
+spring:
+  profiles:
+    active: dev

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- modelVersion是4.0.0，这是当前仅有的可以被Maven2&3同时支持的POM版本，它是必须的 -->
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 本地仓库目录：公司或者组织的唯一标志，并且配置时生成的路径也是由此生成， 如com.lxn，maven会将该项目打成的jar包放本地路径：/com/lxn -->
+    <groupId>com.lxn</groupId>
+    <!-- 项目名称:项目的唯一ID，一个groupId下面可能多个项目，就是靠artifactId来区分的 -->
+    <artifactId>lkanz</artifactId>
+    <!-- 版本号 -->
+    <version>1.0-SNAPSHOT</version>
+    <!-- 打包的格式，可以为：pom , jar , maven-plugin , ejb , war , ear , rar , par -->
+    <packaging>jar</packaging>
+    <!-- 元素声明了一个对用户更为友好的项目名称 -->
+    <name>wishes</name>
+    <!-- 项目的描述, Maven产生的文档用 -->
+    <description>A maven project to study SpringBoot</description>
+
+    <!-- 定义公共资源版本 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <!--  -->
+    <properties>
+        <!-- 整个项目统一字符集编码,有默认，放在此处作为了解 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译时的编码,有默认，放在此处作为了解 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <java.version>1.8</java.version>
+        <lombok.version>1.18.10</lombok.version>
+        <fastjson.version>1.2.62</fastjson.version>
+        <druid.spring.boot.starter.version>1.1.20</druid.spring.boot.starter.version>
+        <mysql.connector.java.version>8.0.18</mysql.connector.java.version>
+        <mybatis.version>2.1.1</mybatis.version>
+    </properties>
+
+    <!-- 上边引入parent，因此，下边无需指定版本 -->
+    <dependencies>
+        <!-- 包含 mvc,aop 等jar资源 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- 阿里druid数据库注入，包含密码加密等 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.spring.boot.starter.version}</version>
+        </dependency>
+
+        <!-- mysql驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.java.version}</version>
+        </dependency>
+
+        <!-- springBoot 自动配置数据库访问基础依赖包，添加此包，即会触发数据库访问的自动配置行为 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <!-- lombok简化部分代码插件,虽然方便，但是没有java思想的设计灵魂，看情况使用吧 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- 阿里巴巴FastJson是一个Json处理工具包 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <!-- apache http工具类，暂时用来写个http访问工具给支付接口使用 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.7</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <!-- 添加 spring boot maven 插件 -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

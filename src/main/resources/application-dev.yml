@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/lxn?characterEncoding=utf8&characterSetResults=utf8&useSSL=false&serverTimezone=UTC&allowMultiQueries=true
+      username: root
+      password: efpPKGrcn9XoO7YrIcxoeC8iItHrbQcDX3Zz7vujJRJJOelk3RetrHSz0AsjIIjk7QqzxcCcz1TU8erAtbwtKw==
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKWAvdAkt195G87n4fK23SmGxS0DcYSTYktghu+CL49HyL+PQaCLrD2YK1ZTUT+ugQIEk+Hjn4Y7XkGW+50HiY8CAwEAAQ==
+      filter:
+        config:
+          enabled: true
+      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
