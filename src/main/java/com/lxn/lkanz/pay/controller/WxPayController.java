@@ -28,7 +28,7 @@ import java.util.TreeMap;
  */
 @Slf4j
 @RestController
-public class WxPayController {
+public class WxPayController extends BaseController{
 
     /**
      * 微信验证服务器
@@ -50,56 +50,7 @@ public class WxPayController {
     @RequestMapping(value = "/api/pay/unifiedOrder", method = {RequestMethod.POST}, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String unifiedOrder(HttpServletRequest request) {
-        try {
-            //1.统一下单
-            String urlString = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-            SortedMap<String, String> packageParams = new TreeMap<String, String>();
-            JSONObject jsonObject = JSONObject.parseObject(HttpUtil.ReadAsChars(request));
-            String apiKey = jsonObject.getString("key");
-            String mchId = jsonObject.getString("mchId");
-            String appId = jsonObject.getString("appId");
-            log.info("接收移动端参数：" + jsonObject.toJSONString());
-            //应用ID
-            packageParams.put("appid", appId);
-            //商品描述
-            packageParams.put("body", "市民电子健康卡");
-            //商户号
-            packageParams.put("mch_id", mchId);
-            //随机字符串
-            packageParams.put("nonce_str", WXPayUtil.generateNonceStr());
-            // 回调地址
-            packageParams.put("notify_url", "http://123.56.87.185/lxn/api/callBackFromWx");
-            //商户订单号
-            packageParams.put("out_trade_no", "lxn_150_" + WXPayUtil.getCurrentTimestampMs());
-            //总金额
-            packageParams.put("total_fee", "1");
-            //交易类型
-            packageParams.put("trade_type", "APP");
-            String sign = WXPayUtil.generateSignature(packageParams, apiKey);
-            packageParams.put("sign", sign);
-            String xmlString = WXPayUtil.mapToXml(packageParams);
-            log.info("统一下单请求参数：\n{}", xmlString);
-            String resultXml = HttpUtil.doPostSSL(urlString, xmlString);
-            log.info("统一下单微信返回结果：\n{}", resultXml);
-            Map<String, String> mapResult = WXPayUtil.xmlToMap(resultXml);
-            //请求参数
-            String wxPayOrderParams = JSONObject.toJSONString(packageParams);
-            String payParams = "";
-            if ("SUCCESS".equals(mapResult.get("return_code"))) {
-                //获取支付参数
-                payParams = getPayParams(resultXml, apiKey);
-            } else {
-                payParams = JSONObject.toJSONString(WXPayUtil.xmlToMap(resultXml));
-            }
-            JSONObject resultJSON = new JSONObject();
-            resultJSON.put("wxPayOrderParams", JSONObject.parseObject(wxPayOrderParams));
-            resultJSON.put("payParams", JSONObject.parseObject(payParams));
-            log.info("返回前端支付参数：\n{}", resultJSON.toJSONString());
-            return resultJSON.toJSONString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
+        return getUnifiedOrderParams("APP").toString();
     }
 
     /**
@@ -256,31 +207,4 @@ public class WxPayController {
         return result;
     }
 
-    /**
-     * 微信官方接口：调起支付接口
-     *
-     * @param resultXml
-     * @throws Exception
-     */
-    public String getPayParams(String resultXml, String apiKey) throws Exception {
-        Map<String, String> map = WXPayUtil.xmlToMap(resultXml);
-        //2.生成签名参数
-        SortedMap<String, String> params = new TreeMap<String, String>();
-        //应用ID
-        params.put("appid", map.get("appid"));
-        //随机字符串
-        params.put("noncestr", WXPayUtil.generateNonceStr());
-        //扩展字段
-        params.put("package", "Sign=WXPay");
-        //商户号
-        params.put("partnerid", map.get("mch_id"));
-        //预支付交易会话ID
-        params.put("prepayid", map.get("prepay_id"));
-        //时间戳
-        params.put("timestamp", WXPayUtil.getCurrentTimestamp() + "");
-        String sign2 = WXPayUtil.generateSignature(params, apiKey);
-        //签名
-        params.put("sign", sign2);
-        return JSON.toJSONString(params);
-    }
 }

@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>lxn专用测试</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            //通过config接口注入权限验证配置
+            wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来
+                appId: "[[${appId}]]", // 必填，公众号的唯一标识
+                timestamp: [[${timeStamp}]], // 必填，生成签名的时间戳
+                nonceStr: "[[${nonceStr}]]", // 必填，生成签名的随机串
+                signature: "[[${paySign}]]",// 必填，签名，见附录1
+                jsApiList: [
+                    'chooseWXPay'
+                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+            //通过error接口处理失败验证
+            wx.error(function (res) {
+                alert(res.errorCode)
+            });
+            wx.ready(function () {
+                wx.chooseWXPay({
+                    timestamp: [[${timeStamp}]], // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                    nonceStr: "[[${nonceStr}]]", // 支付签名随机串，不长于 32 位
+                    package: "[[${package}]]", // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                    signType: "[[${signType}]]", // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                    paySign: "[[${paySign}]]", // 支付签名
+                    success: function (res) {
+                        // 支付成功后的回调函数
+                        alert("success.html.jsp.html");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div style="text-align: center">
+    appId: [[${appId}]],//公众号appId <br/>
+    timestamp: [[${timeStamp}]], // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符<br/>
+    nonceStr: [[${nonceStr}]], // 支付签名随机串，不长于 32 位<br/>
+    package: [[${package}]], // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）<br/>
+    signType: [[${signType}]], // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'<br/>
+    paySign: [[${paySign}]], // 支付签名<br/>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.lxn.lkanz.pay.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lxn.lkanz.pay.util.HttpUtil;
 import com.lxn.lkanz.pay.util.WXPayUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -92,5 +93,22 @@ public class WxPayNotifyController {
             return "fail";
         }
         return "success";
+    }
+
+    @RequestMapping(value = "/api/pay/notify3")
+    @ResponseBody
+    public String notifyForWx(HttpServletRequest request) throws Exception {
+        try {
+            String resultFromWx = HttpUtil.ReadAsChars(request);
+            log.info("平台异步通知参数（notify3）：{}", resultFromWx);
+            log.info("平台异步通知参数（notify3）：{}", JSONObject.toJSONString(resultFromWx));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "fail";
+        }
+        Map<String,String> result = new HashMap<>();
+        result.put("return_code","SUCCESS");
+        result.put("return_msg","OK");
+        return WXPayUtil.mapToXml(result);
     }
 }

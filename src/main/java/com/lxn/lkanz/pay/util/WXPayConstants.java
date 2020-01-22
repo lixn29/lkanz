@@ -6,8 +6,17 @@ import org.apache.http.client.HttpClient;
  * 常量
  */
 public class WXPayConstants {
-
-    public static final String APP_ID="";
+//    {
+//            "appId":"wxd10666d88e024b0c",
+//            "appSecret":"5b51482041181cb23e0e2fff34d08e36",
+//            "mchId":"1525582281",
+//            "key":"u9QCXVif8kZw3Qeyd5kZ9OsJjLhFrmLD",
+//            "certLocalPath":"g2Q2X3h3eFCpExOF.p12"
+//    }
+    public static final String JSAPI_ID = "wx17264fb6093e19c7";
+    public static final String APP_ID="wxd10666d88e024b0c";
+    public static final String MCH_ID="1525582281";
+    public static final String MCH_KEY="u9QCXVif8kZw3Qeyd5kZ9OsJjLhFrmLD";
 
 
     public enum SignType {

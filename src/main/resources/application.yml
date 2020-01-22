@@ -17,5 +17,13 @@ config:
   payHost: http://127.0.0.1:3020/
 
 spring:
+  mvc:
+    static-path-pattern: /mp/**
+  resources:
+    static-locations: file:/usr/local/lxn
+  security:
+    user:
+      name: lxn
+      password: lxn
   profiles:
-    active: dev
+    active: prod

@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>lxn专用测试</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="page" class="page">
+    <div class="item header margin-top-0 padding-bottom-0" id="header3">
+        <header class="wrapper image image1">
+            <div class="bg bg1"></div>
+            <div class="container">
+                <div class="row banner2">
+                    <div class="col-md-8 col-md-offset-2 text-center">
+                        <br class="lead">
+                        支付结果${openid}
+                        <span th:text="${openid}"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
+</body>
+</html>

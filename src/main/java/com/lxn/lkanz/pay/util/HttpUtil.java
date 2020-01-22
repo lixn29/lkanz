@@ -167,8 +167,11 @@ public class HttpUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String respUrl = "http://1r911284s4.iask.in:57411/v1/pay/payNotify?income=20&payOrderId=P01201912261457342080000&amount=20&mchId=20000004&productId=8019&mchOrderNo=1577343455007000001400&paySuccTime=2019-12-26+14%3A57%3A49&sign=C53A992004E78AC08E0F0EB2D4406BDE&channelOrderNo=4200000460201912263592117279&backType=2&param1=&param2=&status=2&payPassAccountId=8";
-        String result = HttpUtil.doPostSSL(respUrl, "", null, null, false, "application/json");
+        String respUrl = "http://172.16.9.50:8888/v1/pay/payNotify?income=900&payOrderId=P01202001071503208730009&amount=900&mchId=20000004&productId=8019&mchOrderNo=1578380513007000001400&paySuccTime=2020-01-07+15%3A03%3A45&sign=353501F6868E7B09E42F68699FE83F47&channelOrderNo=4200000505202001077911113399&backType=2&param1=&param2=&status=2&payPassAccountId=8";
+//      respUrl = "http://192.168.10.179/api/pay/notify3";
+//        respUrl = "http://192.168.10.179:3020/api/pay/notify3";
+        String data = "";
+        String result = HttpUtil.doPostSSL(respUrl, data, null, null, false, "application/json");
         System.out.println("result = " + result);
     }
 }

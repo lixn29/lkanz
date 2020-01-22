@@ -75,10 +75,19 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- spring 模板引擎，用来开发前端页面 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
+        <!--
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        -->
+
 
         <!-- 阿里巴巴FastJson是一个Json处理工具包 -->
         <dependency>

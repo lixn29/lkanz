@@ -6,6 +6,8 @@ spring:
       password: efpPKGrcn9XoO7YrIcxoeC8iItHrbQcDX3Zz7vujJRJJOelk3RetrHSz0AsjIIjk7QqzxcCcz1TU8erAtbwtKw==
       public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKWAvdAkt195G87n4fK23SmGxS0DcYSTYktghu+CL49HyL+PQaCLrD2YK1ZTUT+ugQIEk+Hjn4Y7XkGW+50HiY8CAwEAAQ==
       filter:
+        #开启过滤器，数据库密码加密使用
         config:
           enabled: true
-      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
+      #数据库密码加密开启，公钥配置
+      connectionProperties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
