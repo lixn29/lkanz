@@ -4,6 +4,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -11,7 +12,9 @@ import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 
@@ -84,7 +87,18 @@ public class HttpUtil {
     public static String doPostSSL(String url, String data, String mchId, String certPath) throws Exception {
         return doPostSSL(url, data, mchId, certPath, true, "text/xml");
     }
-
+    /**
+     * 不需要证书,content_type自选
+     *
+     * @param url
+     * @param data
+     * @param content_type
+     * @return
+     * @throws Exception
+     */
+    public static String doPostSSL(String url, String data, String content_type) throws Exception {
+        return doPostSSL(url, data, null, null, false, content_type);
+    }
 
     /**
      * http访问
@@ -164,6 +178,35 @@ public class HttpUtil {
         HttpResponse httpResponse = httpClient.execute(httpPost);
         HttpEntity httpEntity = httpResponse.getEntity();
         return EntityUtils.toString(httpEntity, "UTF-8");
+    }
+
+    /**
+     * http get 请求
+     *
+     * @param url url
+     */
+    public static String doGet(String url) {
+        if (url == null || url.isEmpty()) {
+            return "url is null";
+        }
+        String respCtn = "";
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try {
+            HttpResponse response = null;
+            HttpGet get = new HttpGet(url);
+            response = httpclient.execute(get);
+            respCtn = EntityUtils.toString(response.getEntity());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (httpclient != null) {
+                try {
+                    httpclient.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return respCtn;
     }
 
     public static void main(String[] args) throws Exception {

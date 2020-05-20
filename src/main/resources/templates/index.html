@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>主页</title>
 </head>
 <body>
 <div style="text-align: center">
     公众号支付：格润物联(www.dajingjing.com服务器)</br>
-    <form style="width:1000px;height:500px" method="post" action="/test/wxjsapi">
+    <form method="post" action="/test/wxjsapi">
         <input type="text" name="openid" th:value="${openid}">
         <input type="submit" value="支付">
     </form>
+    </br>
+    </br>
+    公众号支付：格润物联(xxpay服务器)</br>
+    <form method="post" action="/test/xxpayjsapi">
+        <input type="submit" value="支付">
+    </form>
+    </br>
+    </br>
+    公众号支付：健康长春(www.dajingjing.com服务器)</br>
+    <form method="post" action="/test/jkcc/wxjsapi">
+        <input type="text" name="openid" th:value="${jkccOpenid}">
+        <input type="submit" value="支付">
+    </form>
+
     <p>将进酒·君不见</p><br/>
     <p>【作者】李白</p>
     <p>君不见，黄河之水天上来，奔流到海不复回。</p>

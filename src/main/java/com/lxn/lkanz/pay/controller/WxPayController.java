@@ -50,8 +50,58 @@ public class WxPayController extends BaseController{
     @RequestMapping(value = "/api/pay/unifiedOrder", method = {RequestMethod.POST}, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String unifiedOrder(HttpServletRequest request) {
-        return getUnifiedOrderParams("APP").toString();
+        try {
+            //1.统一下单
+            String urlString = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+            SortedMap<String, String> packageParams = new TreeMap<String, String>();
+            JSONObject jsonObject = JSONObject.parseObject(HttpUtil.ReadAsChars(request));
+            String apiKey = jsonObject.getString("key");
+            String mchId = jsonObject.getString("mchId");
+            String appId = jsonObject.getString("appId");
+            log.info("接收移动端参数：" + jsonObject.toJSONString());
+            //应用ID
+            packageParams.put("appid", appId);
+            //商品描述
+            packageParams.put("body", "市民电子健康卡");
+            //商户号
+            packageParams.put("mch_id", mchId);
+            //随机字符串
+            packageParams.put("nonce_str", WXPayUtil.generateNonceStr());
+            // 回调地址
+            packageParams.put("notify_url", "http://123.56.87.185/lxn/api/callBackFromWx");
+            //商户订单号
+            packageParams.put("out_trade_no", "lxn_150_" + WXPayUtil.getCurrentTimestampMs());
+            //总金额
+            packageParams.put("total_fee", "1");
+            //交易类型
+            packageParams.put("trade_type", "APP");
+            String sign = WXPayUtil.generateSignature(packageParams, apiKey);
+            packageParams.put("sign", sign);
+            String xmlString = WXPayUtil.mapToXml(packageParams);
+            log.info("统一下单请求参数：\n{}", xmlString);
+            String resultXml = HttpUtil.doPostSSL(urlString, xmlString);
+            log.info("统一下单微信返回结果：\n{}", resultXml);
+            Map<String, String> mapResult = WXPayUtil.xmlToMap(resultXml);
+            //请求参数
+            String wxPayOrderParams = JSONObject.toJSONString(packageParams);
+            String payParams = "";
+            if ("SUCCESS".equals(mapResult.get("return_code"))) {
+                //获取支付参数
+                payParams = getPayParams(resultXml, apiKey);
+            } else {
+                payParams = JSONObject.toJSONString(WXPayUtil.xmlToMap(resultXml));
+            }
+            JSONObject resultJSON = new JSONObject();
+            resultJSON.put("wxPayOrderParams", JSONObject.parseObject(wxPayOrderParams));
+            resultJSON.put("payParams", JSONObject.parseObject(payParams));
+            log.info("返回前端支付参数：\n{}", resultJSON.toJSONString());
+            return resultJSON.toJSONString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
+
 
     /**
      * 微信官方接口：退款
@@ -168,6 +218,17 @@ public class WxPayController extends BaseController{
         return JSON.toJSONString(WXPayUtil.xmlToMap(resultXml));
     }
 
+    /**
+     * 微信支付回调地址
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/lxn/api/callBackFromWx", method = {RequestMethod.POST}, produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public String lxnCallBackFromWx(HttpServletRequest request) {
+        return callBackFromWx(request);
+    }
     /**
      * 微信支付回调地址
      *

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+</head>
+<body>
+<div style="text-align: center">
+    公众号支付：格润物联(www.dajingjing.com服务器)</br>
+    <form style="width:1000px;height:500px" method="post" action="/test/wxjsapi">
+        <input type="text" name="openid" th:value="${openid}">
+        <input type="submit" value="支付">
+    </form>
+</div>
+</body>
+</html>
